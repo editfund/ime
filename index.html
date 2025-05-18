@@ -57,17 +57,10 @@
 <button id="stop-button">Stop</button>
 <hr>
 
-<h1>Scan from File:</h1>
-<input type="file" id="file-selector">
-<b>Detected QR code: </b>
-<span id="file-qr-result">None</span>
-
-<!--<script src="../qr-scanner.umd.min.js"></script>-->
-<!--<script src="../qr-scanner.legacy.min.js"></script>-->
 <script type="module">
     import QrScanner from "https://unpkg.com/qr-scanner@1.4.2/qr-scanner.min.js";
 
-    const video = document.getElementById('qr-video');
+    const video1 = document.getElementById('qr-video');
     const videoContainer = document.getElementById('video-container');
     const camHasCamera = document.getElementById('cam-has-camera');
     const camList = document.getElementById('cam-list');
@@ -76,8 +69,6 @@
     const flashState = document.getElementById('flash-state');
     const camQrResult = document.getElementById('cam-qr-result');
     const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
-    const fileSelector = document.getElementById('file-selector');
-    const fileQrResult = document.getElementById('file-qr-result');
 
     function setResult(label, result) {
         console.log(result.data);
@@ -90,7 +81,7 @@
 
     // ####### Web Cam Scanning #######
 
-    const scanner = new QrScanner(video, result => setResult(camQrResult, result), {
+    const scanner = new QrScanner(video1, result => setResult(camQrResult, result), {
         onDecodeError: error => {
             camQrResult.textContent = error;
             camQrResult.style.color = 'inherit';
@@ -157,17 +148,6 @@
         scanner.stop();
     });
 
-    // ####### File Scanning #######
-
-    fileSelector.addEventListener('change', event => {
-        const file = fileSelector.files[0];
-        if (!file) {
-            return;
-        }
-        QrScanner.scanImage(file, { returnDetailedScanResult: true })
-            .then(result => setResult(fileQrResult, result))
-            .catch(e => setResult(fileQrResult, { data: e || 'No QR code found.' }));
-    });
 </script>
 
 <style>
